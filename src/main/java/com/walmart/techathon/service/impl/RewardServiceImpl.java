@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+
 @Service
 @Slf4j
 public class RewardServiceImpl implements RewardService {
@@ -20,7 +22,7 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public RewardDetails getRewardDetails(ProductDetails productDetails) {
         long price = productDetails.getPrice();
-        long rewardCoins = (price/rewardPercent) * 100;
+        long rewardCoins = (price*rewardPercent) / 100;
         return new RewardDetails(rewardCoins, productDetails);
     }
 
