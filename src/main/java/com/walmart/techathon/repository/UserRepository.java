@@ -30,7 +30,8 @@ public class UserRepository {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
-            throw e;
+            log.error("failed while fetching user details ", e);
+            throw new RuntimeException("failed to fetch user details");
         }
     }
 }

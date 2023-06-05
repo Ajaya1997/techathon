@@ -29,8 +29,12 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public User redeemRewardCoinsAndExtendWPlusMember(String userId) {
         log.info("redeem request received for userId {}", userId);
+        // storing the cloning version because we are not using DB for now. Otherwise, we could have used the @transactional
+        User clone = null;
+        User user;
         try {
-            User user = userRepository.getUserDetails(userId);
+            user = userRepository.getUserDetails(userId);
+            clone = (User) user.clone();
             long rewardCoins = user.getWplusMember().getRewardCoins();
             if (rewardCoins >= minRewardCoinRequiredForWPlus) {
                 user.getWplusMember().setRewardCoins(rewardCoins - minRewardCoinRequiredForWPlus);
@@ -40,7 +44,11 @@ public class RewardServiceImpl implements RewardService {
             }
             return user;
         } catch (Exception e) {
-            throw e;
+            log.error("failed to redeem the coins ", e);
+            // if anything goes wrong while reward redeem, rolling back.
+            if (clone != null)
+                user = clone;
+            throw new RuntimeException("failed to redeem the coin");
         }
     }
 }
