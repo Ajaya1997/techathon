@@ -31,7 +31,7 @@ public class RewardServiceImpl implements RewardService {
         log.info("redeem request received for userId {}", userId);
         // storing the cloning version because we are not using DB for now. Otherwise, we could have used the @transactional
         User clone = null;
-        User user;
+        User user = null;
         try {
             user = userRepository.getUserDetails(userId);
             clone = (User) user.clone();
@@ -47,7 +47,7 @@ public class RewardServiceImpl implements RewardService {
             log.error("failed to redeem the coins ", e);
             // if anything goes wrong while reward redeem, rolling back.
             if (clone != null)
-                user = clone;
+                user.setWplusMember(clone.getWplusMember());
             throw new RuntimeException("failed to redeem the coin");
         }
     }
