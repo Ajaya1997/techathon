@@ -25,4 +25,6 @@ public class RewardController {
     public User redeemRewardCoins(@PathVariable String userId) {
         return rewardService.redeemRewardCoinsAndExtendWPlusMember(userId);
     }
+
+    // hello world
 }
