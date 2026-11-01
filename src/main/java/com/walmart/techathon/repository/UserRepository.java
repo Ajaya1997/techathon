@@ -33,5 +33,7 @@ public class UserRepository {
             log.error("failed while fetching user details ", e);
             throw new RuntimeException("failed to fetch user details");
         }
+
+        // hello world
     }
 }
